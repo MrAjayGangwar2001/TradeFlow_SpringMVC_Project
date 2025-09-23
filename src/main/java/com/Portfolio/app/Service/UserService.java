@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.Portfolio.app.Dto.UserDto;
+import com.Portfolio.app.Exception.CustomException.UserIdNotFoundException;
 import com.Portfolio.app.Model.UserModel;
 import com.Portfolio.app.Repository.UserRepo;
 
@@ -30,7 +31,7 @@ public class UserService {
 
     }
 
-    public List<UserDto> GetAllData(){
+    public List<UserDto> GetAllData() {
 
         List<UserModel> um = urepo.findAll();
 
@@ -48,12 +49,14 @@ public class UserService {
             UserDto user = new UserDto(umd.getId(), umd.getName(), umd.getEmail());
 
             return user;
-        }else{
-            throw new Exception("We can not find id");
+        } else {
+            // throw new Exception("We can not find id");
+            throw new UserIdNotFoundException("Sorry!, We couldn't Find the id, , Your Search id is :  " + id);
+
         }
     }
 
-    public String DeleteById(Long id) throws Exception{
+    public String DeleteById(Long id) throws Exception {
         Optional<UserModel> um = urepo.findById(id);
 
         if (um.isPresent()) {
@@ -61,14 +64,15 @@ public class UserService {
 
             urepo.delete(umd);
 
-            return "You data id : "+id+" Has been Deleted.f";
-        }else{
-            throw new Exception("User Id Nhi mili!");
+            return "You data id : " + id + " Has been Deleted.f";
+        } else {
+            // throw new Exception("User Id Nhi mili!");
+            throw new UserIdNotFoundException("Sorry!, We couldn't Find the id, , Your Search id is :  " + id);
+
         }
     }
 
-    public UserDto UpdateDataById(UserDto userDto, Long id) throws Exception{
-
+    public UserDto UpdateDataById(UserDto userDto, Long id) throws Exception {
 
         Optional<UserModel> um = urepo.findById(id);
 
@@ -84,7 +88,9 @@ public class UserService {
 
             return ud;
         } else {
-            throw new Exception("Sorry!, We couldn't Find the id : "+ id);
+            // throw new Exception("Sorry!, We couldn't Find the id : " + id);
+            throw new UserIdNotFoundException("Sorry!, We couldn't Find the id, , Your Search id is :  " + id);
+
         }
     }
 }
