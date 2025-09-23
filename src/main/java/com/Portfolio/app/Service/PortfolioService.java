@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.Portfolio.app.Dto.PortfolioDto;
+import com.Portfolio.app.Exception.CustomException.PortfolioIdNotFoundException;
 import com.Portfolio.app.Model.PortfolioModel;
 import com.Portfolio.app.Repository.PortfolioRepo;
 
@@ -15,11 +16,11 @@ public class PortfolioService {
     @Autowired
     private PortfolioRepo prepo;
 
-
-    public PortfolioDto PostPortfolioData(PortfolioDto portfolioDto){
+    public PortfolioDto PostPortfolioData(PortfolioDto portfolioDto) {
         PortfolioModel pm = new PortfolioModel();
 
         pm.setAssetname(portfolioDto.getAssetname());
+        // pm.setAssetname(null);     // It Throw Data_Integrity_Violation_Exception
         pm.setPrice(portfolioDto.getPrice());
         pm.setQuantity(portfolioDto.getQuantity());
         pm.setUpdatedAt(null);
@@ -30,30 +31,34 @@ public class PortfolioService {
         return pdto;
     }
 
-    public List<PortfolioDto> GetAllPortfolio(){
+    public List<PortfolioDto> GetAllPortfolio() {
 
         List<PortfolioModel> pm = prepo.findAll();
 
-        List<PortfolioDto> pd = pm.stream().map((x) -> new PortfolioDto(x.getId(), x.getAssetname(), x.getPrice(), x.getQuantity())).toList();
+        List<PortfolioDto> pd = pm.stream()
+                .map((x) -> new PortfolioDto(x.getId(), x.getAssetname(), x.getPrice(), x.getQuantity())).toList();
 
         return pd;
     }
 
-    public PortfolioDto GetById(Long id) throws Exception{
+    public PortfolioDto GetById(Long id) throws Exception {
         Optional<PortfolioModel> pm = prepo.findById(id);
 
         if (pm.isPresent()) {
             PortfolioModel pmdl = pm.get();
 
-            PortfolioDto pdto = new PortfolioDto(pmdl.getId(), pmdl.getAssetname(), pmdl.getPrice(), pmdl.getQuantity());
+            PortfolioDto pdto = new PortfolioDto(pmdl.getId(), pmdl.getAssetname(), pmdl.getPrice(),
+                    pmdl.getQuantity());
 
             return pdto;
-        }else{
-            throw new Exception("We Could not found a Id : "+id);
+        } else {
+            // throw new Exception("We Could not found a Id : "+id);
+            throw new PortfolioIdNotFoundException();
+
         }
     }
 
-    public PortfolioDto UpdateById(PortfolioDto portfolioDto, Long id) throws Exception{
+    public PortfolioDto UpdateById(PortfolioDto portfolioDto, Long id) throws Exception {
 
         Optional<PortfolioModel> pm = prepo.findById(id);
 
@@ -70,27 +75,30 @@ public class PortfolioService {
 
             return pfd;
         } else {
-            throw new Exception("Maaf Karna , Hume Database me id nhi mili ? ");
+            // throw new Exception("Maaf Karna , Hume Database me id nhi mili ? ");
+            throw new PortfolioIdNotFoundException();
+
         }
     }
 
-
-    public String DeleteById(Long id) throws Exception{
+    public String DeleteById(Long id) throws Exception {
         Optional<PortfolioModel> pmdl = prepo.findById(id);
 
         if (pmdl.isPresent()) {
             PortfolioModel pmd = pmdl.get();
 
             prepo.delete(pmd);
-            return "Your Given Id : "+id+ " Has Been Deleted from Database.";
+            return "Your Given Id : " + id + " Has Been Deleted from Database.";
         } else {
-            throw new Exception("Id nhi mili ! Kripya Id Check Karein");
+            // throw new Exception("Id nhi mili ! Kripya Id Check Karein");
+            throw new PortfolioIdNotFoundException();
+
         }
     }
 
-    //-----------------Special Method----------------
+    // -----------------Special Method----------------
 
-    public PortfolioDto getSpecialData(Long id) throws Exception{
+    public PortfolioDto getSpecialData(Long id) throws Exception {
         Optional<PortfolioModel> pm = prepo.findById(id);
 
         if (pm.isPresent()) {
@@ -100,9 +108,10 @@ public class PortfolioService {
 
             return pfd;
         } else {
-            throw new Exception("Hame Id Nhi Mili ? Dubara Sahi Id Se Try Karein !");
+            // throw new Exception("Hame Id Nhi Mili ? Dubara Sahi Id Se Try Karein !");
+            throw new PortfolioIdNotFoundException();
+
         }
     }
-
 
 }
