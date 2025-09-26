@@ -12,7 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.Portfolio.app.Exception.CustomException.PortfolioIdNotFoundException;
+import com.Portfolio.app.Exception.CustomException.DashboardIdNotFoundException;
 import com.Portfolio.app.Exception.CustomException.UserIdNotFoundException;
 
 @RestControllerAdvice
@@ -29,11 +29,11 @@ public class GlobalException {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(PortfolioIdNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> PortfolioIdNotFoundException(PortfolioIdNotFoundException px){
+    @ExceptionHandler(DashboardIdNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> DashboardIdNotFoundException(DashboardIdNotFoundException px){
         Map<String, Object> err = new HashMap<>();
         err.put("Message", "ID NOT FOUND");
-        err.put("Error", "Sorry ! We could not found the Portfolio id ");
+        err.put("Error", "Sorry ! We could not found the Dashboard id ");
         err.put("Status", HttpStatus.NOT_FOUND.value());
         // err.put("TimeStamp", LocalDateTime.now());
         err.put("TimeStamp", OffsetDateTime.now());
@@ -46,8 +46,13 @@ public class GlobalException {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> ValidationException(MethodArgumentNotValidException ve){
         Map<String, Object> err = new HashMap<>();
+        String errMessage = ve.getBindingResult().getFieldErrors()
+        .stream()
+        .map(error -> error.getField() + " : "+ error.getDefaultMessage())
+        .findFirst()
+        .orElse("Invalid Input");
         err.put("Message", "VALIDATION FAILED");
-        err.put("Error", "Please Enter Valid Data");
+        err.put("Error", errMessage);
         err.put("Status", HttpStatus.UNAUTHORIZED.value());
         // err.put("TimeStamp", LocalDateTime.now());
         err.put("TimeStamp", OffsetDateTime.now());
@@ -63,7 +68,7 @@ public class GlobalException {
         er.put("Message", "Please Check Post Method, Might you are Trying to set null value");
         er.put("Error", "Data Integrity Voilation Exception Occured !");
         er.put("Status", HttpStatus.CONFLICT.value());
-        er.put("TimeStamp", LocalDateTime.now());
+        er.put("TimeStamp", OffsetDateTime.now());
 
         return new ResponseEntity<>(er, HttpStatus.CONFLICT);
     }
