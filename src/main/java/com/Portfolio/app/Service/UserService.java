@@ -10,6 +10,7 @@ import com.Portfolio.app.Dto.UserDto;
 import com.Portfolio.app.Exception.CustomException.UserIdNotFoundException;
 import com.Portfolio.app.Model.UserModel;
 import com.Portfolio.app.Repository.UserRepo;
+import com.Portfolio.app.Wallet.WalletModel;
 
 @Service
 public class UserService {
@@ -18,10 +19,13 @@ public class UserService {
     private UserRepo urepo;
 
     public UserDto PostData(UserDto userDto) {
+        // WalletModel CreateWallet = new WalletModel();    To create wallet When user create
         UserModel um = new UserModel();
 
         um.setName(userDto.getName());
         um.setEmail(userDto.getEmail());
+
+        // um.setWallet(CreateWallet);
 
         urepo.save(um);
 
