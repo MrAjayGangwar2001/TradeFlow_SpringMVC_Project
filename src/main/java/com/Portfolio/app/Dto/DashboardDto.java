@@ -15,7 +15,7 @@ public class DashboardDto {
     private Long id;
 
     @NotBlank
-    private String assetname;
+    private String assetName;
 
     // @NotNull
     // @Positive
