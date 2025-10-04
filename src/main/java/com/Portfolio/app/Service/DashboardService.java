@@ -19,7 +19,7 @@ public class DashboardService {
     public DashboardDto PostDashboardData(DashboardDto dashboardDto) {
         DashboardModel pm = new DashboardModel();
 
-        pm.setAssetname(dashboardDto.getAssetname());
+        pm.setAssetName(dashboardDto.getAssetName());
         // pm.setAssetname(null);     // It Throw Data_Integrity_Violation_Exception
         pm.setPrice(dashboardDto.getPrice());
         // pm.setQuantity(DashboardDto.getQuantity());
@@ -28,7 +28,7 @@ public class DashboardService {
         prepo.save(pm);
 
         // DashboardDto pdto = new DashboardDto(pm.getId(), pm.getAssetname(), pm.getPrice(), pm.getQuantity());
-        DashboardDto pdto = new DashboardDto(pm.getId(), pm.getAssetname(), pm.getPrice());
+        DashboardDto pdto = new DashboardDto(pm.getId(), pm.getAssetName(), pm.getPrice());
         return pdto;
     }
 
@@ -38,7 +38,7 @@ public class DashboardService {
 
         List<DashboardDto> pd = pm.stream()
                 // .map((x) -> new DashboardDto(x.getId(), x.getAssetname(), x.getPrice(), x.getQuantity())).toList();
-                .map((x) -> new DashboardDto(x.getId(), x.getAssetname(), x.getPrice())).toList();
+                .map((x) -> new DashboardDto(x.getId(), x.getAssetName(), x.getPrice())).toList();
 
         return pd;
     }
@@ -51,7 +51,7 @@ public class DashboardService {
 
             // DashboardDto pdto = new DashboardDto(pmdl.getId(), pmdl.getAssetname(), pmdl.getPrice(),
             //         pmdl.getQuantity());
-            DashboardDto pdto = new DashboardDto(pmdl.getId(), pmdl.getAssetname(), pmdl.getPrice());
+            DashboardDto pdto = new DashboardDto(pmdl.getId(), pmdl.getAssetName(), pmdl.getPrice());
 
             return pdto;
         } else {
@@ -68,14 +68,14 @@ public class DashboardService {
         if (pm.isPresent()) {
             DashboardModel pmd = pm.get();
 
-            pmd.setAssetname(dashboardDto.getAssetname());
+            pmd.setAssetName(dashboardDto.getAssetName());
             pmd.setPrice(dashboardDto.getPrice());
             // pmd.setQuantity(DashboardDto.getQuantity());
 
             prepo.save(pmd);
 
             // DashboardDto pfd = new DashboardDto(pmd.getId(), pmd.getAssetname(), pmd.getPrice(), pmd.getQuantity());
-            DashboardDto pfd = new DashboardDto(pmd.getId(), pmd.getAssetname(), pmd.getPrice());
+            DashboardDto pfd = new DashboardDto(pmd.getId(), pmd.getAssetName(), pmd.getPrice());
 
             return pfd;
         } else {
@@ -109,7 +109,7 @@ public class DashboardService {
             DashboardModel pfm = pm.get();
 
             // DashboardDto pfd = new DashboardDto(pfm.getId(), pfm.getAssetname(), pfm.getPrice(), pfm.getQuantity());
-            DashboardDto pfd = new DashboardDto(pfm.getId(), pfm.getAssetname(), pfm.getPrice());
+            DashboardDto pfd = new DashboardDto(pfm.getId(), pfm.getAssetName(), pfm.getPrice());
 
             return pfd;
         } else {
