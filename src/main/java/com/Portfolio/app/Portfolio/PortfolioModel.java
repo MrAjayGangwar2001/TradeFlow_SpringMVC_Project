@@ -4,6 +4,7 @@ import java.time.OffsetDateTime;
 
 import com.Portfolio.app.Model.DashboardModel;
 import com.Portfolio.app.Model.UserModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -51,7 +52,7 @@ public class PortfolioModel {
     @ManyToOne
     @JoinColumn(name = "UserId")
     private UserModel user;
-
+    
     // Relation To Dashboard(Assets)
     @ManyToOne
     @JoinColumn(name = "assetId")
