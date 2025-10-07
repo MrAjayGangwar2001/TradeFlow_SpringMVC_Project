@@ -1,6 +1,7 @@
 package com.Portfolio.app.WalletTransaction;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -28,9 +29,21 @@ public class TransactionService {
 
     }
 
-    public List<TransactionDto> GetTransactionByWalletId(Long walletId) {
+    public List<TransactionDto> findTransactionByWalletId(Long walletId) throws Exception {
 
-        return transRepo.findByWallet_WalletId(walletId);
+        List<TransactionModel> tm = transRepo.findByWallet_WalletId(walletId);
+
+        if (tm.isEmpty()) {
+            throw new Exception("Transaction is Empty for the wallet Id : " + walletId);
+        }
+
+        // Agar Hume sirf read-only list chahiye, to .toList() use karna best hai.
+
+        // Agar Hume baad me list modify karni hai (add/remove/update), to
+        // .collect(Collectors.toList()) use karenge.
+        return tm.stream().map((trans) -> new TransactionDto(trans.getTransactionId(), trans.getAmount(),
+                trans.getType(), trans.getDescription())).collect(Collectors.toList());
+        // return transRepo.findByWallet_WalletId(walletId);
     }
 
 }
