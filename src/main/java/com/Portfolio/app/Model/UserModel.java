@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.Portfolio.app.Portfolio.PortfolioModel;
 import com.Portfolio.app.Wallet.WalletModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -58,6 +59,7 @@ public class UserModel {
 
     // Portfolio Relation
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<PortfolioModel> portfolio = new HashSet<>();
     
 }
