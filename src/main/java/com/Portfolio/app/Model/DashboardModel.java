@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.Portfolio.app.Order.OrderModel;
 import com.Portfolio.app.Portfolio.PortfolioModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -77,5 +78,6 @@ public class DashboardModel {
 
     // Relation To Portfolio
     @OneToMany
+    @JsonIgnore
     private Set<PortfolioModel> portfolio = new HashSet<>();
 }
