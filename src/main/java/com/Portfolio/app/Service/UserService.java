@@ -10,7 +10,6 @@ import com.Portfolio.app.Dto.UserDto;
 import com.Portfolio.app.Exception.CustomException.UserIdNotFoundException;
 import com.Portfolio.app.Model.UserModel;
 import com.Portfolio.app.Repository.UserRepo;
-import com.Portfolio.app.Wallet.WalletModel;
 
 @Service
 public class UserService {
