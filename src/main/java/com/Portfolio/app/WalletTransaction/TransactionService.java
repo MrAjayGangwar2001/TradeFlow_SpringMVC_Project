@@ -28,9 +28,9 @@ public class TransactionService {
 
     }
 
-    public List<TransactionDto> GetTransactionByWalletId(Long Id) {
+    public List<TransactionDto> GetTransactionByWalletId(Long walletId) {
 
-        return transRepo.findByWalletId(Id);
+        return transRepo.findByWallet_WalletId(walletId);
     }
 
 }
