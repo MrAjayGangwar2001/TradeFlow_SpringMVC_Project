@@ -52,7 +52,7 @@ public class TransactionModel {
 
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "wallet_id", nullable = false)
+    @JoinColumn(name = "wallet_Id", nullable = false)
     private WalletModel wallet;
 
 
