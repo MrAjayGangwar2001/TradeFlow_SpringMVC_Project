@@ -13,6 +13,7 @@ import com.Portfolio.app.Exception.CustomException.InsufficientBalanceException;
 import com.Portfolio.app.Exception.CustomException.UserIdNotFoundException;
 import com.Portfolio.app.Model.DashboardModel;
 import com.Portfolio.app.Model.UserModel;
+import com.Portfolio.app.Portfolio.PortfolioService;
 import com.Portfolio.app.Repository.DashboardRepo;
 import com.Portfolio.app.Repository.UserRepo;
 import com.Portfolio.app.Wallet.WalletModel;
@@ -36,7 +37,9 @@ public class OrderService {
 
     private final TransactionService transactionService;
 
-    @Async
+    private final PortfolioService portfolioService;
+
+    // @Async
     @Transactional // agar beech me koi error ho jaye to dono save rollback ho jayein.
     public CompletableFuture<String> OrderPost(Long Id, OrderDto orderDto) throws Exception {
 
@@ -76,20 +79,25 @@ public class OrderService {
 
                     urepo.save(umdl);
                     or.save(om);
-
+                    
+                    // TransactionService / OrderService me
+                    portfolioService.PortfolioUpdate(Id, orderDto);
+                    
                     // Jab OrderPost hoga tab balance deduct hone ka transaction
                     transactionService.RecordTransaction(walletBalance, TotalOrderValue, TransactionType.Withdraw,
-                            "Order placed for " + orderDto.getAssetName());
-
-                    Thread.sleep(5000);
-
+                    "Order placed for " + orderDto.getAssetName());
+                    
+                    // Thread.sleep(5000);
+                    
                     // This method is non-optimised and blocking code way and also heavy
                     // return CompletableFuture.completedFuture("Order Executed");
-
+                    
                     // Let's see the optimised way to with non-blocking delay
 
+                    
+                    
                     return CompletableFuture.supplyAsync(() -> "Order Executed",
-                            CompletableFuture.delayedExecutor(5, TimeUnit.SECONDS));
+                    CompletableFuture.delayedExecutor(5, TimeUnit.SECONDS));
 
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
