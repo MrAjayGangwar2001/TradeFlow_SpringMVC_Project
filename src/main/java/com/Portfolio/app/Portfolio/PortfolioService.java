@@ -10,6 +10,7 @@ import com.Portfolio.app.Model.UserModel;
 import com.Portfolio.app.Order.OrderDto;
 import com.Portfolio.app.Repository.DashboardRepo;
 import com.Portfolio.app.Repository.UserRepo;
+import com.Portfolio.app.Response.PortfolioResponse;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -79,7 +80,7 @@ public class PortfolioService {
         }
     }
 
-    public List<PortfolioDto> getPortfolioByUser(Long userId) throws Exception {
+    public List<PortfolioResponse> getPortfolioByUser(Long userId) throws Exception {
 
         // PortfolioModel pm = portfolioRepo.findByUser_Id(userId).orElseThrow(() -> new
         // Exception("Can not found User Id"));
@@ -89,12 +90,16 @@ public class PortfolioService {
             throw new Exception("Could not found Portfolio for User Id: " + userId);
         }
 
-            List<PortfolioDto> pdto = portfolios.stream()
-                    .map(p -> new PortfolioDto(p.getPortfolioId(), p.getTotalQuantity(), p.getAvgBuyPrice())).toList();
+        // List<PortfolioDto> pdto = portfolios.stream()
+        //         .map(p -> new PortfolioDto(p.getPortfolioId(), p.getTotalQuantity(), p.getAvgBuyPrice())).toList();
 
-            return pdto;
+        // return pdto;
+
+        return portfolios.stream().map(p -> new PortfolioResponse(p.getPortfolioId(), p.getUser().getId(), p.getDashboard().getId(), p.getDashboard().getAssetName(), p.getTotalQuantity(), p.getAvgBuyPrice(), p.getTotalQuantity() * p.getAvgBuyPrice())).toList();
         
-
     }
+
+
+    
 
 }
