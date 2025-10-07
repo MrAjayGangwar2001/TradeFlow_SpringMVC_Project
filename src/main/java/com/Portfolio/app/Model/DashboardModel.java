@@ -1,10 +1,12 @@
 package com.Portfolio.app.Model;
 
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import com.Portfolio.app.Order.OrderModel;
+import com.Portfolio.app.Portfolio.PortfolioModel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -64,10 +66,16 @@ public class DashboardModel {
 
 
 
+    // Relation To Users
     @ManyToMany(mappedBy = "dashboard")
     private List<UserModel> users;
 
 
+    // Relation To Orders
     @OneToMany(mappedBy = "dashboard")
     private Set<OrderModel> ordersId;
+
+    // Relation To Portfolio
+    @OneToMany
+    private Set<PortfolioModel> portfolio = new HashSet<>();
 }
