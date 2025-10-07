@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends JpaRepository<TransactionModel, Long> {
 
-    public List<TransactionDto> findByWalletId(Long Id);
+    public List<TransactionModel> findByWallet_WalletId(Long walletId);
 }
