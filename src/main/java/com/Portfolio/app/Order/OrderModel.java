@@ -2,6 +2,7 @@ package com.Portfolio.app.Order;
 
 import com.Portfolio.app.Model.DashboardModel;
 import com.Portfolio.app.Wallet.WalletModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,7 +21,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.lang.ProcessBuilder.Redirect.Type;
 import java.time.OffsetDateTime;
 
 import com.Portfolio.app.Enum.OrderType;
@@ -49,12 +49,14 @@ public class OrderModel {
 
     @ManyToOne
     @JoinColumn(name = "WalletId", referencedColumnName = "walletId")
+    @JsonIgnore
     private WalletModel wallet;
 
     // Dashboard Relationship to get data
 
     @ManyToOne
     @JoinColumn(name = "assetId")
+    @JsonIgnore
     private DashboardModel dashboard;
 
     @Column(nullable = false, updatable = false)
