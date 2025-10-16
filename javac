@@ -1,0 +1,89 @@
+1. WalletTransactionEntity
+
+👉 Har baar jab balance add/remove hoga ya order place hoga, uska ek transaction record rahe.
+Fields:
+
+transaction_id (PK)
+
+wallet_id (FK → wallet)
+
+amount (positive = credit, negative = debit)
+
+type (e.g. DEPOSIT, WITHDRAW, ORDER_DEBIT, ORDER_REFUND)
+
+created_at (timestamp)
+
+description (optional: “Added via UPI”, “Debited for order #123”)
+
+2. PortfolioEntity
+
+👉 User ke pass kaunse assets hain aur kitni quantity, ye store karega. Ye aggregated view hai jo Orders table se update hoga.
+Fields:
+
+portfolio_id (PK)
+
+user_id (FK → users)
+
+asset_id (FK → dashboard)
+
+total_quantity
+
+avg_buy_price (important for P&L)
+
+last_updated (timestamp)
+
+3. UserProfileEntity (optional but useful)
+
+👉 Agar tumhe Users table light rakhna hai, to profile alag rakho.
+Fields:
+
+user_id (FK → users)
+
+full_name
+
+email
+
+phone
+
+kyc_status (PENDING / VERIFIED)
+
+created_at
+
+4. (Optional but Recommended) AuditLogEntity
+
+👉 Backend actions ka log (debugging + security).
+Fields:
+
+log_id (PK)
+
+user_id (FK → users, nullable for system actions)
+
+action (e.g. LOGIN, ORDER_PLACED, WALLET_DEBIT)
+
+details (JSON/text)
+
+created_at
+
+✅ Phase 1 Minimum Entities Set
+
+Users ✅
+
+Wallet ✅
+
+Orders ✅
+
+Dashboard (Assets) ✅
+
+WalletTransactions 🔥 (zaroori hai)
+
+Portfolio 🔥 (zaroori hai)
+
+UserProfile & AuditLog optional hai, lekin project ko professional banate hain.
+
+👉 Suggestion: Pehle hum WalletTransactions aur Portfolio bna lete hain. Ye dono entities tumhare flow ko complete kar denge:
+
+User adds money → Wallet + WalletTransactions update.
+
+User places order → Orders table me entry + Wallet debit + Portfolio update.
+
+User cancels order → Refund to Wallet + Portfolio rollback.
