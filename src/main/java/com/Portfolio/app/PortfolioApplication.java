@@ -10,7 +10,7 @@ public class PortfolioApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PortfolioApplication.class, args);
-		System.out.println("This is Portfolio Application");
+		System.out.println("TradeFlow Application is Running");
 	}
 
 }
