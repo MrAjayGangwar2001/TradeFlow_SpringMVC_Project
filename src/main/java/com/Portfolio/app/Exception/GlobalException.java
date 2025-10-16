@@ -110,7 +110,7 @@ public class GlobalException {
         Map<String, Object> Allerr = new HashMap<>();
 
         Allerr.put("Message", "Service Down, Please Try Again!");
-        Allerr.put("Error", "INTERNAL SERVER ERROR"+ ex.getClass().getSimpleName());
+        Allerr.put("Error", "INTERNAL SERVER ERROR :: "+ ex.getClass().getSimpleName());
         Allerr.put("Status", HttpStatus.INTERNAL_SERVER_ERROR.value());
         Allerr.put("TimeStamp", LocalDateTime.now());
 
