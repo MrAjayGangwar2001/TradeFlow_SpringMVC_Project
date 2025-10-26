@@ -215,5 +215,8 @@ public class HomeController {
 
     
 
-    
+    @GetMapping("/login")
+    public String loginPage() {
+        return "login";  // ye login.html file ko return karega (templates folder se)
+    }
 }
