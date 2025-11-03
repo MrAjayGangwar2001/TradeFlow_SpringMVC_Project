@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Portfolio.app.Security.UserData.User;
+import com.Portfolio.app.Security.UserData.UserServ;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,11 +16,12 @@ import lombok.RequiredArgsConstructor;
 public class JWTController {
 
     private final JWTService service;
+    private final UserServ userv;
 
-    @PostMapping("/token")
+    @PostMapping("/register")
     public String postUser(@RequestBody User user) {
        
-        return service.CreateToken(user);
+        return userv.CreateUser(user);
     }
 
     @GetMapping("/msg")
