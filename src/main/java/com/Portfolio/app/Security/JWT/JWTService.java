@@ -32,4 +32,5 @@ public class JWTService {
         .claim("email", user.getEmail()).issuedAt(new Date())
         .expiration(new Date(System.currentTimeMillis() + 1000 * 60)).signWith(EncodeSecretKey()).compact();
     }
+
 }
