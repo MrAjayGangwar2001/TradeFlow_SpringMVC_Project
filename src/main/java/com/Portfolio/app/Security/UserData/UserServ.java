@@ -1,8 +1,11 @@
 package com.Portfolio.app.Security.UserData;
 
+import java.util.Optional;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.Portfolio.app.Security.JWT.JWTService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -11,7 +14,8 @@ import lombok.RequiredArgsConstructor;
 public class UserServ {
 
     private final UserReposit urepo;
-    private final  PasswordEncoder passEncode;
+    private final PasswordEncoder passEncode;
+    private final JWTService JService;
 
     public String CreateUser(User user) {
 
@@ -19,8 +23,15 @@ public class UserServ {
 
         urepo.save(user);
 
-        return "Data has been Successfully Sent";
+        String token = JService.CreateToken(user);
+        // String getPayLoad = JService.fetchbyId(token);
+        String getPayLoad = JService.FetchEmail(token);
 
+        // return "Token : "+ token + "\n"+ "Fetch by user id "+ getPayLoad;
+        return "Token : " + token + "\n" + "Fetch by email id " + getPayLoad;
+        
     }
+    
+
 
 }
