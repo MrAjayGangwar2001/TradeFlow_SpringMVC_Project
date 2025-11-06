@@ -1,16 +1,22 @@
 package com.Portfolio.app.Security.Config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.Portfolio.app.Security.CustomSuccessHandler;
+import com.Portfolio.app.Security.JWT.JWTAuthFilter;
 
 @Configuration
 public class SecurityConfig {
+
+    @Autowired
+    private JWTAuthFilter JWTAuthFilter;
 
 
     @Bean
@@ -47,7 +53,8 @@ public class SecurityConfig {
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .permitAll()
-            );
+            )
+            .addFilterBefore(JWTAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
