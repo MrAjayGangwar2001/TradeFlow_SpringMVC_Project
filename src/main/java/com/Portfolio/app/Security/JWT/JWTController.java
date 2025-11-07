@@ -20,7 +20,7 @@ public class JWTController {
 
     @PostMapping("/register")
     public String postUser(@RequestBody User user) {
-       
+
         return userv.CreateUser(user);
     }
 
