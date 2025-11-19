@@ -1,5 +1,5 @@
-# Step 1: Build the jar using Maven Wrapper
-FROM maven:3.9.6-eclipse-temurin-17 AS build
+# Stage 1: Build the application using Java 21
+FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
 
