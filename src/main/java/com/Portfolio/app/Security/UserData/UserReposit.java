@@ -1,4 +1,5 @@
 package com.Portfolio.app.Security.UserData;
+
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,6 +14,6 @@ public interface UserReposit extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(@Param("email") String email);
 
-    User findByUsername(String userName);
+    User findByUserName(String userName);
 
 }
