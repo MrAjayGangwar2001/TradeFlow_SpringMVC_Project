@@ -18,43 +18,32 @@ public class SecurityConfig {
     @Autowired
     private JWTAuthFilter JWTAuthFilter;
 
-
     @Bean
-    public PasswordEncoder EncodePassword(){
+    public PasswordEncoder EncodePassword() {
 
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public SecurityFilterChain SecurityConfiguration(HttpSecurity httpSecurity) throws Exception{
+    public SecurityFilterChain SecurityConfiguration(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity
-            .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/", "/register").permitAll()
-                    // .requestMatchers("/user").authenticated()
-                    // .requestMatchers("/admin").authenticated()
-                    .requestMatchers("/user").hasRole("USER")
-                    .requestMatchers("/admin").hasRole("ADMIN")
-                    .anyRequest().authenticated()
-                )
+        httpSecurity.csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/", "/register").permitAll()
+                        // .requestMatchers("/user").authenticated()
+                        // .requestMatchers("/admin").authenticated()
+                        .requestMatchers("/user").hasRole("USER").requestMatchers("/admin").hasRole("ADMIN")
+                        .anyRequest().authenticated())
                 // .formLogin(form -> form.disable()
-                .formLogin(form -> form
-                .loginPage("/login")           // apna Login page
-                .loginProcessingUrl("/login")  // form action URL
-                .successHandler(new CustomSuccessHandler())
-                // .defaultSuccessUrl("/user", true) // login success ke baad
-                .failureUrl("/login?error=true")  // agar galat credentials
-                .permitAll()
-            )
-            // .httpBasic(basic -> basic.disable())
-            // .logout(logout -> logout.disable()
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/")
-                .permitAll()
-            )
-            .addFilterBefore(JWTAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .formLogin(form -> form.loginPage("/login") // apna Login page
+                        .loginProcessingUrl("/login") // form action URL
+                        .successHandler(new CustomSuccessHandler())
+                        // .defaultSuccessUrl("/user", true) // login success ke baad
+                        .failureUrl("/login?error=true") // agar galat credentials
+                        .permitAll())
+                // .httpBasic(basic -> basic.disable())
+                // .logout(logout -> logout.disable()
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/").permitAll());
+        // .addFilterBefore(JWTAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return httpSecurity.build();
     }
