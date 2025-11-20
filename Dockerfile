@@ -1,5 +1,5 @@
 # Stage 1: Build the application using Java 21
-FROM eclipse-temurin:21-jdk AS build
+FROM eclipse-temurin:25-jdk AS build
 
 WORKDIR /app
 
@@ -14,7 +14,7 @@ RUN ./mvnw clean package -DskipTests
 
 
 # Step 2: Run the Spring Boot application
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:25-jdk-alpine
 
 WORKDIR /app
 
