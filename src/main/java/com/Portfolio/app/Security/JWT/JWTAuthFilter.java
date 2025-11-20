@@ -35,7 +35,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         // Token :
         // eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiZW1haWwiOiJhamF5QDVnbWFpbC5jb20iLCJpYXQiOjE3NjIyNTkwMjUsImV4cCI6MTc2MjI1OTA4NX0.lhVEEm86mirJmivwr_C0i4ONikUZht4vepsFSaxTMxg
 
-       // If header is missing OR not Bearer token → skip the filter
+        // If header is missing OR not Bearer token → skip the filter
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -61,16 +61,17 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
                 User user = userOptional.get();
 
-            if (JService.isTokenValid(token, user)) {
+                if (JService.isTokenValid(token, user)) {
 
-                // Session Stored
+                    // Session Stored
 
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null,
-                        user.getAuthorities());
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user, null,
+                            user.getAuthorities());
 
-                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                SecurityContextHolder.getContext().setAuthentication(authToken);
+                    SecurityContextHolder.getContext().setAuthentication(authToken);
+                }
             }
 
             filterChain.doFilter(request, response);
