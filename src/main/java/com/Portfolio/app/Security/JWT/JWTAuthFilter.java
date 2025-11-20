@@ -35,27 +35,33 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         // Token :
         // eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2IiwiZW1haWwiOiJhamF5QDVnbWFpbC5jb20iLCJpYXQiOjE3NjIyNTkwMjUsImV4cCI6MTc2MjI1OTA4NX0.lhVEEm86mirJmivwr_C0i4ONikUZht4vepsFSaxTMxg
 
-        String token = authHeader.substring(7).trim();
-
-        if (authHeader == null || authHeader.startsWith("bearer")) {
+       // If header is missing OR not Bearer token → skip the filter
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        // Check isToken Expired...
+        // Extract token safely
+        String token = authHeader.substring(7).trim();
+
+        // Expired token → skip
         if (JService.isExpired(token)) {
             filterChain.doFilter(request, response);
             return;
         }
 
+        // Get email from token
         String emailFromToken = JService.FetchEmail(token);
 
-        Optional<User> userOptional = urepo.findByEmail(emailFromToken);
-        if (userOptional.isPresent()) {
+        if (emailFromToken != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            User user = userOptional.get();
+            Optional<User> userOptional = urepo.findByEmail(emailFromToken);
 
-            if (JService.isTokenValid(emailFromToken, user)) {
+            if (userOptional.isPresent()) {
+
+                User user = userOptional.get();
+
+            if (JService.isTokenValid(token, user)) {
 
                 // Session Stored
 
