@@ -11,22 +11,20 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
-public class CustomSuccessHandler implements AuthenticationSuccessHandler{
+public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException{
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+            Authentication authentication) throws IOException, ServletException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
 
-            if (roles.contains("ROLE_ADMIN")) {
-                response.sendRedirect("/admin");
-            } else if (roles.contains("ROLE_USER")) {
-                response.sendRedirect("/user");
-            }else {
-                response.sendRedirect("/login?error=true");
-            }
+        if (roles.contains("ROLE_ADMIN")) {
+            response.sendRedirect("/admin");
+        } else if (roles.contains("ROLE_USER")) {
+            response.sendRedirect("/user");
+        } else {
+            response.sendRedirect("/login?error=true");
+        }
     }
 
 }
