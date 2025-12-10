@@ -17,14 +17,15 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class JWTAuthFilter extends OncePerRequestFilter {
 
-    @Autowired
-    private JWTService JService;
-    @Autowired
-    private UserReposit urepo;
+    
+    private final JWTService JService;
+    private final UserReposit urepo;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
